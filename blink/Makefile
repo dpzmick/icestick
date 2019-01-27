@@ -25,6 +25,7 @@ prog: build/blink.bit
 .PHONY: sim
 sim: build/dump.vcd
 
+# make waves lol
 .PHONY: waves
 waves: build/dump.vcd
 	gtkwave build/dump.vcd
