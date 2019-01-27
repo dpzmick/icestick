@@ -28,7 +28,7 @@ module test;
 
     initial begin
         clk = 0;
-        $dumpfile("dump.vcd");
+        $dumpfile(`DUMPFILE);
         $dumpvars;
 
         #10 SW1 = 1;

@@ -13,12 +13,18 @@ build/blink.bit: build build/blink.pnr
 	icepack build/blink.pnr build/blink.bit
 
 build/simme: blink.v blink_tb.v
-	iverilog -o build/simme $^
+	iverilog -o build/simme $^ -DDUMPFILE="\"build/dump.vcd\""
+
+build/dump.vcd: build/simme
+	build/simme
 
 .PHONY: prog
 prog: build/blink.bit
 	iceprog build/blink.bit
 
 .PHONY: sim
-sim: build/simme
-	build/simme
+sim: build/dump.vcd
+
+.PHONY: waves
+waves: build/dump.vcd
+	gtkwave build/dump.vcd
