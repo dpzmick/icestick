@@ -1,14 +1,24 @@
-all: blink.blif
+all: sim
 
-blink.blif: blink.v
-	yosys -p "synth_ice40 -blif blink.blif" blink.v
+build/blink.blif: blink.v
+	yosys -p "synth_ice40 -blif build/blink.blif" blink.v
 
-blink.pnr: blink.blif blink.pcf
-	arachne-pnr -d 1k -o blink.pnr -p blink.pcf blink.blif
+build:
+	mkdir build
 
-blink.bit: blink.pnr
-	icepack blink.pnr blink.bit
+build/blink.pnr: build build/blink.blif blink.pcf
+	arachne-pnr -d 1k -o build/blink.pnr -p blink.pcf build/blink.blif
+
+build/blink.bit: build build/blink.pnr
+	icepack build/blink.pnr build/blink.bit
+
+build/simme: blink.v blink_tb.v
+	iverilog -o build/simme $^
 
 .PHONY: prog
-prog: blink.bit
-	iceprog blink.bit
+prog: build/blink.bit
+	iceprog build/blink.bit
+
+.PHONY: sim
+sim: build/simme
+	build/simme

@@ -13,13 +13,12 @@ module blink(
 
 // secret code is 11234
 
-parameter START = 4'b0000;
-parameter CODE1 = 4'b0001;
-parameter CODE2 = 4'b0010;
-parameter CODE3 = 4'b0011;
-parameter CODE4 = 4'b0011;
-parameter CODE5 = 4'b0111;
-parameter SUCC  = 4'b1000;
+parameter START = 3'b000;
+parameter CODE1 = 3'b001;
+parameter CODE2 = 3'b010;
+parameter CODE3 = 3'b011;
+parameter CODE4 = 3'b011;
+parameter SUCC  = 3'b111;
 
 reg last_sw1 = 0;
 reg last_sw2 = 0;
@@ -31,7 +30,7 @@ wire sw2_toggle;
 wire sw3_toggle;
 wire sw4_toggle;
 
-reg [3:0] state = START;
+reg [2:0] state = START;
 
 assign sw1_toggle = last_sw1 != SW1 && last_sw1 == 1;
 assign sw2_toggle = last_sw2 != SW2 && last_sw2 == 1;
@@ -62,9 +61,17 @@ always @(posedge clk) begin
                 else if (sw2_toggle || sw3_toggle || sw4_toggle) state <= START;
                 else                                             state <= CODE1;
 
-        CODE2 : if (sw2_toggle)                                  state <= SUCC;
+        CODE2 : if (sw2_toggle)                                  state <= CODE3;
                 else if (sw1_toggle || sw3_toggle || sw4_toggle) state <= START;
                 else                                             state <= CODE2;
+
+        CODE3 : if (sw3_toggle)                                  state <= CODE4;
+                else if (sw1_toggle || sw2_toggle || sw4_toggle) state <= START;
+                else                                             state <= CODE3;
+
+        CODE4 : if (sw4_toggle)                                  state <= SUCC;
+                else if (sw1_toggle || sw2_toggle || sw3_toggle) state <= START;
+                else                                             state <= CODE4;
 
         SUCC : if (sw1_toggle || sw2_toggle || sw3_toggle || sw4_toggle) state <= START;
                else                                                      state <= SUCC;

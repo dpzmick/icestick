@@ -1,0 +1,11 @@
+#      FPGA name,  FPGA PIN
+set_io clk         21
+set_io LED1        99
+set_io LED2        98
+set_io LED3        97
+set_io LED4        96
+set_io LED5        95
+set_io SW1         78
+set_io SW2         79
+set_io SW3         80
+set_io SW4         81
