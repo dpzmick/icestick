@@ -21,7 +21,8 @@ module test;
         .LED1(LED1),
         .LED2(LED2),
         .LED3(LED3),
-        .LED4(LED4)
+        .LED4(LED4),
+        .LED5(LED5)
     );
 
     always #5 clk = !clk;
