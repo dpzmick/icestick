@@ -1,12 +1,12 @@
 include mkrules.mk
 
-TB_TESTERS = verilator_tb/sanity \
-			 verilator_tb/spi_simple
+TB_TESTERS = tb/sanity \
+			 tb/spi_simple
 
 TB_VERILOG = verilog/sanity \
 			 verilog/spi
 
-TB_OBJS = ${VERILATOR_OBJS} ${TB_TESTERS} verilator_tb/catch_main
+TB_OBJS = ${VERILATOR_OBJS} ${TB_TESTERS} tb/catch_main
 $(call add-bin,testbench,${TB_OBJS},$(TB_VERILOG))
 
 tb: ${BUILD_DIR}/bin/testbench

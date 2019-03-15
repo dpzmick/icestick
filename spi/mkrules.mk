@@ -7,7 +7,7 @@ IFLAGS             := -isystem/usr/share/verilator/include/ -I${BUILD_DIR}
 CXXFLAGS           := -std=c++17 -Wall -Wextra -Werror -O3 -c -g ${IFLAGS} \
 	                  -Wno-unused-local-typedefs
 VERILATOR_CXXFLAGS := -std=c++17 -O3 -c -isystem/usr/share/verilator/include/
-LDFLAGS            :=
+LDFLAGS            := -lfmt
 
 all: bin
 
@@ -35,7 +35,7 @@ ${BUILD_DIR}/verilator/verilated_vcd_c.d: /usr/share/verilator/include/verilated
 ${BUILD_DIR}/%__ALL.av ${BUILD_DIR}/%.hvv: %.v
 	# Creating verilator obj $@
 	@mkdir -p $(shell dirname $@)
-	verilator -cc --trace --prefix $(shell basename $*) $< --Mdir $(shell dirname $@) -CFLAGS "${VERILATOR_CXXFLAGS}" -O3
+	verilator -cc --trace --prefix $(shell basename $*) $< --Mdir $(shell dirname $@) -CFLAGS "${VERILATOR_CXXFLAGS}" -O3 --trace-underscore
 	make -C $(shell dirname $@) -f $(shell basename $*).mk
 	cp -p ${BUILD_DIR}/$*__ALL.a ${BUILD_DIR}/$*__ALL.av
 	cp -p ${BUILD_DIR}/$*.h      ${BUILD_DIR}/$*.hvv
@@ -50,6 +50,10 @@ ${BUILD_DIR}/%.d: %.cpp
 	@# if the compiler picked up the actual file (because it already existed), we
 	@# just rewrote it poorly. Undo that..
 	sed -i -E 's/${BUILD_DIR}\/${BUILD_DIR}([^ ]+hvv)/${BUILD_DIR}\/\1/gm' $@
+	@# something above is adding extra slashes and make doesn't recognize the targets
+	@# undo that too
+	tr -s '/' < $@ > $@.tmp
+	mv $@.tmp $@
 	@# this is insane! FIXME is there a better set of g++ flags?
 
 ${BUILD_DIR}/%.o: %.cpp

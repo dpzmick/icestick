@@ -154,7 +154,7 @@ TEST_CASE("AllOf", "[libsim]")
     Events transition(Uninitialized, InitEvent) {
       state           = Waiting{};
       timeout_counter = 0;
-      return AllOf{ {Timeout{100}, Timeout{200}} };
+      return AllOf{Timeout{100}, Timeout{200}};
     }
 
     Events transition(Waiting, Timeout) {
@@ -187,7 +187,7 @@ TEST_CASE("OneOf", "[libsim]")
 
     Events transition(Uninitialized, InitEvent) {
       state = Waiting{};
-      return OneOf{ {Timeout{100}, Timeout{200}} };
+      return OneOf{Timeout{100}, Timeout{200}};
     }
 
     Events transition(Waiting, Timeout) {
@@ -216,7 +216,7 @@ TEST_CASE("user id", "[libsim]")
 
     Events transition(Uninitialized, InitEvent) {
       state = Waiting{};
-      return AllOf{ {Timeout{100, 0xdeadbeef}, Timeout{200, 0xcafebabe}} };
+      return AllOf{ Timeout{100, 0xdeadbeef}, Timeout{200, 0xcafebabe} };
     }
 
     Events transition(Waiting, Timeout t) {

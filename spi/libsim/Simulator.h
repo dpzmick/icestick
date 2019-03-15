@@ -106,6 +106,16 @@ struct DefaultEval<bool>
   }
 };
 
+template<>
+struct DefaultEval<uint8_t>
+{
+  HiLow operator()(void const* ptr) const {
+    uint8_t b = *static_cast<uint8_t const*>(ptr);
+    if (b) return HiLow::Hi;
+    else   return HiLow::Low;
+  }
+};
+
 struct RisingEdge : public EventBase {
   using is_event = std::true_type;
 
@@ -176,10 +186,24 @@ struct None { };
 struct Only { SimpleEvent ev; };
 
 // Fires all of the events in the list
-struct AllOf { std::vector<SimpleEvent> events; };
+struct AllOf {
+  template <typename... Args>
+  AllOf(Args&&... args)
+   : events({std::forward<Args>(args)...})
+  { }
+
+  std::vector<SimpleEvent> events;
+};
 
 // Exactly one event can fire, others are canceled if any fires
-struct OneOf { std::vector<SimpleEvent> events; };
+struct OneOf {
+  template <typename... Args>
+  OneOf(Args&&... args)
+   : events({std::forward<Args>(args)...})
+  { }
+
+  std::vector<SimpleEvent> events;
+};
 
 using Events = std::variant<None, Only, AllOf, OneOf>;
 
