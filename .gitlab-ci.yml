@@ -1,4 +1,7 @@
+image: ubuntu
+
 before_script:
+  - apt-get update
   - apt-get install verilator
   - apt-get install g++
   - apt-get install make
