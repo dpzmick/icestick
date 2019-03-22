@@ -1,13 +1,4 @@
-image: ubuntu
-
-before_script:
-  - apt-get update
-  - apt-get install -y verilator
-  - apt-get install -y perl-modules # needed by verilator
-  - apt-get install -y clang
-  - apt-get install -y g++
-  - apt-get install -y make
-  - apt-get install -y libfmt-dev
+image: registry.gitlab.com/dpzmick/icestick
 
 simtest:
   only:
