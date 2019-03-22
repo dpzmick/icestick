@@ -4,6 +4,7 @@ before_script:
   - apt-get install make
 
 test:
-  - cd spi
-  - make simtest
-  - make tb
+  script:
+    - cd spi
+    - make simtest
+    - make tb
