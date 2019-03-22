@@ -69,7 +69,7 @@ ${BUILD_DIR}/%.CPP: %.cpp
 ${BUILD_DIR}/bin/%:
 	# Creating binary $@
 	@mkdir -p ${BUILD_DIR}/bin/
-	${CXX} ${LDFLAGS} $^ -o $@
+	${CXX} $^ ${LDFLAGS} -o $@
 
 # $(1): name of binary
 # $(2): list of objects to link in
