@@ -5,7 +5,7 @@
 
 #include "verilog/spi.hvv"
 
-#include <verilated_vcd_c.h> // FIXME should be system
+#include <verilated_vcd_c.h>
 #include <fmt/format.h>
 #include <algorithm>
 
