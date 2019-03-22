@@ -7,8 +7,12 @@ before_script:
   - apt-get install -y make
   - apt-get install -y libfmt-dev
 
-test:
+simtest:
   script:
     - cd spi
     - make -j $(nproc) simtest
+
+spi-tb:
+  script:
+    - cd spi
     - make -j $(nproc) tb
