@@ -1,0 +1,9 @@
+before_script:
+  - apt-get install verilator
+  - apt-get install g++
+  - apt-get install make
+
+test:
+  - cd spi
+  - make simtest
+  - make tb
