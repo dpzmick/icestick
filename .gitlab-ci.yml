@@ -5,15 +5,20 @@ before_script:
   - apt-get install -y verilator
   - apt-get install -y perl-modules # needed by verilator
   - apt-get install -y clang
+  - apt-get install -y g++
   - apt-get install -y make
   - apt-get install -y libfmt-dev
 
 simtest:
+  only:
+    changes: spi/libsim/**/*
   script:
     - cd spi
     - make -j $(nproc) simtest
 
 spi-tb:
+  except:
+    changes: spi/libsim/**/*
   script:
     - cd spi
     - make -j $(nproc) tb
