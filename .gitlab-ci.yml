@@ -1,15 +1,11 @@
 image: registry.gitlab.com/dpzmick/icestick
 
 simtest:
-  only:
-    changes: spi/libsim/**/*
   script:
     - cd spi
     - make -j $(nproc) simtest
 
 spi-tb:
-  except:
-    changes: spi/libsim/**/*
   script:
     - cd spi
     - make -j $(nproc) tb
